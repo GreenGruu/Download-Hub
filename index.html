@@ -184,36 +184,36 @@
       <input id="search" type="text" placeholder="Search downloads..." />
     </header>
 
-    <section class="downloads">
+    <section class="downloads" data-repo="OWNER/REPO">
 
-      <div class="card">
+      <div class="card" data-asset="TuffClient.zip">
         <span class="tag">CLIENT</span>
         <h3>TuffClient</h3>
-        <p class="meta">Version: 1.21.4 • Size:  23.6mb</p>
+        <p class="meta">Version: 1.0 • Size:  —</p>
         <p>Minecraft utility client packaged as a ZIP file.</p>
         <a class="download-btn" href="TuffClient.zip" download>⬇ Download</a>
       </div>
 
-      <div class="card">
+      <div class="card" data-asset="WurstClient 1.8.8.zip">
         <span class="tag">CLIENT</span>
         <h3>WurstClient 1.8.8</h3>
-        <p class="meta">Version: 1.8.8 • Size: 11.6mb</p>
+        <p class="meta">Version: 1.8.8 • Size: —</p>
         <p>Legacy Wurst client for Minecraft 1.8.8.</p>
         <a class="download-btn" href="WurstClient 1.8.8.zip" download>⬇ Download</a>
       </div>
 
-      <div class="card">
+      <div class="card" data-asset="Messenger.2.0.html">
         <span class="tag">HTML</span>
         <h3>Messenger 2.0</h3>
-        <p class="meta">Version: 2.0 • Size: 66.9kb</p>
+        <p class="meta">Version: 2.0 • Size: —</p>
         <p>Standalone HTML messenger application.</p>
         <a class="download-btn" href="Messenger.2.0.html" download>⬇ Download</a>
       </div>
 
-      <div class="card">
+      <div class="card" data-asset="4simpleproblems_v5_latest.html">
         <span class="tag">HTML</span>
         <h3>4 Simple Problems v5</h3>
-        <p class="meta">Version: v5 • Size: 2.23kb</p>
+        <p class="meta">Version: v5 • Size: —</p>
         <p>Latest version of the 4 Simple Problems HTML project.</p>
         <a class="download-btn" href="4simpleproblems_v5_latest.html" download>⬇ Download</a>
       </div>
@@ -239,6 +239,32 @@
       });
     });
   </script>
+  <script>
+    async function loadDownloadCounts() {
+      const section = document.querySelector('.downloads');
+      const repo = section.dataset.repo; // format: OWNER/REPO
+      if (!repo || repo === 'OWNER/REPO') return;
+
+      const res = await fetch(`https://api.github.com/repos/${repo}/releases`);
+      const releases = await res.json();
+
+      const assets = {};
+      releases.forEach(r => {
+        r.assets.forEach(a => assets[a.name] = a.download_count);
+      });
+
+      document.querySelectorAll('.card').forEach(card => {
+        const name = card.dataset.asset;
+        if (assets[name] !== undefined) {
+          const meta = card.querySelector('.meta');
+          meta.textContent += ` • ${assets[name].toLocaleString()} downloads`;
+        }
+      });
+    }
+
+    loadDownloadCounts();
+  </script>
+
   <script>
     const canvas = document.getElementById('stars');
     const ctx = canvas.getContext('2d');
