@@ -25,13 +25,25 @@
     }
 
     body {
-      background: radial-gradient(circle at top, #1a1f2b, var(--bg));
+      background: transparent;
       color: var(--text);
       min-height: 100vh;
       padding: 2.5rem;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    /* ===== STAR BACKGROUND ===== */
+    #stars {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
     }
 
     .container {
+      position: relative;
+      z-index: 1;
       max-width: 1100px;
       margin: 0 auto;
       display: grid;
@@ -147,6 +159,7 @@
   </style>
 </head>
 <body>
+  <canvas id="stars"></canvas>
   <main class="container">
 
     <header>
@@ -209,6 +222,56 @@
         card.style.display = text.includes(value) ? 'block' : 'none';
       });
     });
+  </script>
+  <script>
+    const canvas = document.getElementById('stars');
+    const ctx = canvas.getContext('2d');
+    let w, h, stars;
+
+    function resize() {
+      w = canvas.width = window.innerWidth;
+      h = canvas.height = window.innerHeight;
+    }
+
+    function createStars(count = 180) {
+      stars = Array.from({ length: count }, () => ({
+        x: Math.random() * w,
+        y: Math.random() * h,
+        z: Math.random() * 0.8 + 0.2,
+        r: Math.random() * 1.2 + 0.3
+      }));
+    }
+
+    function draw() {
+      // paint dark space background
+      ctx.fillStyle = '#0f1115';
+      ctx.fillRect(0, 0, w, h);
+
+      ctx.fillStyle = '#ffffff';
+      for (const s of stars) {
+        ctx.globalAlpha = s.z;
+        ctx.beginPath();
+        ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+        ctx.fill();
+
+        s.y += s.z * 0.35;
+        if (s.y > h) {
+          s.y = 0;
+          s.x = Math.random() * w;
+        }
+      }
+      ctx.globalAlpha = 1;
+      requestAnimationFrame(draw);
+    }
+
+    window.addEventListener('resize', () => {
+      resize();
+      createStars(300);
+    });
+
+    resize();
+    createStars();
+    draw();
   </script>
 </body>
 </html>
