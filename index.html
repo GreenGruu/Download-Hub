@@ -119,12 +119,6 @@
       margin-bottom: 0.4rem;
     }
 
-    .card p {
-      color: var(--muted);
-      font-size: 0.95rem;
-      margin-bottom: 1.25rem;
-    }
-
     .download-btn {
       display: inline-flex;
       align-items: center;
@@ -184,12 +178,12 @@
       <input id="search" type="text" placeholder="Search downloads..." />
     </header>
 
-    <section class="downloads" data-repo="GreenGrumn/Download-Hub">
+    <section class="downloads">
 
       <div class="card" data-asset="TuffClient.zip">
         <span class="tag">CLIENT</span>
         <h3>TuffClient</h3>
-        <p class="meta">Version: 1.0 • Size:  —</p>
+        <p class="meta">Version: 1.0 • Size: —</p>
         <p>Minecraft utility client packaged as a ZIP file.</p>
         <a class="download-btn" href="TuffClient.zip" download>⬇ Download</a>
       </div>
@@ -239,33 +233,9 @@
       });
     });
   </script>
-  <script>
-    async function loadDownloadCounts() {
-      const section = document.querySelector('.downloads');
-      const repo = section.dataset.repo; // format: OWNER/REPO
-      if (!repo || repo === 'OWNER/REPO') return;
-
-      const res = await fetch(`https://api.github.com/repos/${repo}/releases`);
-      const releases = await res.json();
-
-      const assets = {};
-      releases.forEach(r => {
-        r.assets.forEach(a => assets[a.name] = a.download_count);
-      });
-
-      document.querySelectorAll('.card').forEach(card => {
-        const name = card.dataset.asset;
-        if (assets[name] !== undefined) {
-          const meta = card.querySelector('.meta');
-          meta.textContent += ` • ${assets[name].toLocaleString()} downloads`;
-        }
-      });
-    }
-
-    loadDownloadCounts();
-  </script>
 
   <script>
+    // ===== STAR FIELD =====
     const canvas = document.getElementById('stars');
     const ctx = canvas.getContext('2d');
     let w, h, stars;
@@ -285,7 +255,6 @@
     }
 
     function draw() {
-      // paint dark space background
       ctx.fillStyle = '#0f1115';
       ctx.fillRect(0, 0, w, h);
 
