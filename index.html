@@ -212,7 +212,6 @@
         <a class="download-btn" href="4simpleproblems_v5_latest.html" download>⬇ Download</a>
       </div>
 
-      <!-- New Downloads -->
       <div class="card" data-asset="Emulator.JS.html">
         <span class="tag">HTML</span>
         <h3>Emulator.JS</h3>
@@ -229,6 +228,23 @@
         <a class="download-btn" href="gn-math.zip" download>⬇ Download</a>
       </div>
 
+      <!-- New Eaglercraft Downloads -->
+      <div class="card" data-asset="Eaglercraft 1.12.2.zip">
+        <span class="tag">ZIP</span>
+        <h3>Eaglercraft 1.12.2</h3>
+        <p class="meta">Version: 1.12.2 • ZIP file</p>
+        <p>Eaglercraft client for Minecraft 1.12.2.</p>
+        <a class="download-btn" href="Eaglercraft 1.12.2.zip" download>⬇ Download</a>
+      </div>
+
+      <div class="card" data-asset="Eaglercraft 1.8.8.zip">
+        <span class="tag">ZIP</span>
+        <h3>Eaglercraft 1.8.8</h3>
+        <p class="meta">Version: 1.8.8 • ZIP file</p>
+        <p>Eaglercraft client for Minecraft 1.8.8.</p>
+        <a class="download-btn" href="Eaglercraft 1.8.8.zip" download>⬇ Download</a>
+      </div>
+
     </section>
 
     <footer>
@@ -243,7 +259,6 @@
 
     searchInput.addEventListener('input', () => {
       const value = searchInput.value.toLowerCase();
-
       cards.forEach(card => {
         const text = card.innerText.toLowerCase();
         card.style.display = text.includes(value) ? 'block' : 'none';
